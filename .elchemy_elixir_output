@@ -34,7 +34,11 @@ defmodule Router do
   plug :match
   plug :dispatch
 
-  match _, do: run(conn.params["path"], "GET", conn)
+  def start_link do
+  Plug.Adapters.Cowboy.http(Router, [])
+  end
+
+  match _, do: run(conn.method, conn.path_info, conn)
 
 
   @spec run(String.t, list(String.t), Conn.conn) :: Conn.conn

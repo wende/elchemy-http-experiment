@@ -10,7 +10,11 @@ import Conn exposing (Conn)
    plug :match
    plug :dispatch
 
-   match _, do: run(conn.params["path"], "GET", conn)
+   def start_link do
+     Plug.Adapters.Cowboy.http(Router, [])
+   end
+
+   match _, do: run(conn.method, conn.path_info, conn)
 
 -}
 
@@ -22,4 +26,4 @@ run method path conn =
             Conn.sendResp 200 "Hi there" conn
 
         ( _, _, _ ) ->
-            Conn.sendResp 404 "Not found" cnn
+            Conn.sendResp 404 "Not found" conn

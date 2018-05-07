@@ -1,28 +1,31 @@
-
-# Compiled using Elchemy v0.5.4
+# Compiled using Elchemy v0.6.6
 defmodule Router do
   use Elchemy
 
-  
   alias Conn
 
   use Plug.Router
   import Plug.Router
 
-  plug :match
-  plug :dispatch
+  plug(:match)
+  plug(:dispatch)
 
-  match _, do: run(conn.params["path"], "GET", conn)
-
-
-  @spec run(String.t, list(String.t), Conn.conn) :: Conn.conn
-  curry run/3
-  def run("GET" = method, ["hello"] = path, _ = conn) do
-    Conn.send_resp(200, "Hi there", conn)
-  end
-  def run(_ = method, _ = path, _ = conn) do
-    Conn.send_resp(404, "Not found", conn)
+  def start_link do
+    Plug.Adapters.Cowboy.http(Router, [])
   end
 
+  match(_, do: run(conn.method, conn.path_info, conn))
+
+  @spec run(String.t(), list(String.t()), Conn.conn()) :: Conn.conn()
+  curry(run / 3)
+
+  def run(method, path, conn) do
+    case {method, path, conn} do
+      {"GET", ["hello"], _} ->
+        Conn.send_resp(200, "Hi there", conn)
+
+      {_, _, _} ->
+        Conn.send_resp(404, "Not found", conn)
+    end
+  end
 end
-
