@@ -1,19 +1,9 @@
-# ElchemyWeb
+# ElchemyHttpExperiment
 
-**TODO: Add description**
+Start with
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `elchemy_web` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [{:elchemy_web, "~> 0.1.0"}]
-end
+```
+iex -S mix
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/elchemy_web](https://hexdocs.pm/elchemy_web).
-
+![Screenshot](/screenshot.png?raw=true)
