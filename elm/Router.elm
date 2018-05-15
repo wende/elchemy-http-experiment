@@ -8,8 +8,8 @@ import Http
 run : String -> List String -> Conn -> Conn
 run method path conn =
     case ( method, path, conn ) of
-        ( "GET", [ "hello" ], _ ) ->
-            Conn.sendResp 200 "Hi there" conn
+        ( "GET", [ "hello", name ], _ ) ->
+            Conn.sendResp 200 ("Hi there " ++ name ++ "!") conn
 
         ( _, _, _ ) ->
             Conn.sendResp 404 "Not found" conn
@@ -17,5 +17,5 @@ run method path conn =
 
 meta : List Macro
 meta =
-    [ Http.listen
+    [ Http.listen run
     ]

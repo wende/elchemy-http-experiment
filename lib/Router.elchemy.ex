@@ -1,5 +1,5 @@
 
-# Compiled using Elchemy v0.7.0-0
+# Compiled using Elchemy v0.7.1
 defmodule Router do
   use Elchemy
 
@@ -11,8 +11,8 @@ defmodule Router do
   curry run/3
   def run(method, path, conn) do
     case {method, path, conn} do
-      {"GET", ["hello"], _} ->
-        Conn.send_resp(200, "Hi there", conn)
+      {"GET", ["hello", name], _} ->
+        Conn.send_resp(200, ("Hi there " ++ (name ++ "!")), conn)
       {_, _, _} ->
         Conn.send_resp(404, "Not found", conn)
     end
@@ -22,5 +22,6 @@ end
 defmodule Router.Meta do
   require Http
 
-  [Http.listen]
+  [Http.listen(Router.run())]
 end
+

@@ -1,11 +1,12 @@
 module Http exposing (listen)
 
-import Elchemy exposing (..)
 import Elchemy.Macros exposing (..)
+import Conn exposing (Conn)
 
 
 {- ex
-   def listen_macro do
+   def listen_macro(callback) do
+       {m, f, []} = Macro.decompose_call(callback)
        quote do
            use Plug.Router
            import Plug.Router
@@ -18,17 +19,10 @@ import Elchemy.Macros exposing (..)
            end
 
            match _ do
-             mod =
-                __MODULE__
-                |> Module.split
-                |> Enum.drop(-1)
-                |> Module.concat
-
               conn = %Plug.Conn{method: method, path_info: path_info} = var!(conn)
-              mod.run(method, path_info, conn)
+              unquote(m).unquote(f)(method, path_info, conn)
             end
        end
-       |> IO.inspect(label: "listen")
    end
    def plug_macro(plug_name) do
        quote do
@@ -38,6 +32,6 @@ import Elchemy.Macros exposing (..)
 -}
 
 
-listen : Macro
+listen : (String -> List String -> Conn -> Conn) -> Macro
 listen =
     macro "Http" "listen_macro"

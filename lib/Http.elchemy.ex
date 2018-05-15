@@ -1,12 +1,14 @@
 
-# Compiled using Elchemy v0.7.0-0
+# Compiled using Elchemy v0.7.1
 defmodule Http do
   use Elchemy
 
   
   import Elchemy.Macros
+  alias Conn
 
-  def listen_macro do
+  def listen_macro(callback) do
+      {m, f, []} = Macro.decompose_call(callback)
       quote do
           use Plug.Router
           import Plug.Router
@@ -19,17 +21,10 @@ defmodule Http do
           end
 
           match _ do
-            mod =
-               __MODULE__
-               |> Module.split
-               |> Enum.drop(-1)
-               |> Module.concat
-
              conn = %Plug.Conn{method: method, path_info: path_info} = var!(conn)
-             mod.run(method, path_info, conn)
+             unquote(m).unquote(f)(method, path_info, conn)
            end
       end
-      |> IO.inspect(label: "listen")
   end
   def plug_macro(plug_name) do
       quote do
@@ -37,7 +32,8 @@ defmodule Http do
       end
   end
 
-  defmacro listen(), do: Http.listen_macro()
+  defmacro listen(a1), do: Http.listen_macro(a1)
 
 end
+
 
