@@ -1,22 +1,8 @@
 module Router exposing (..)
 
 import Conn exposing (Conn)
-
-
-{- ex
-   use Plug.Router
-   import Plug.Router
-
-   plug :match
-   plug :dispatch
-
-   def start_link do
-     Plug.Adapters.Cowboy.http(Router, [])
-   end
-
-   match _, do: run(conn.method, conn.path_info, conn)
-
--}
+import Elchemy.Macros exposing (..)
+import Http
 
 
 run : String -> List String -> Conn -> Conn
@@ -27,3 +13,9 @@ run method path conn =
 
         ( _, _, _ ) ->
             Conn.sendResp 404 "Not found" conn
+
+
+meta : List Macro
+meta =
+    [ Http.listen
+    ]

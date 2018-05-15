@@ -9,7 +9,13 @@
     "exposed-modules": [],
     "dependencies": {
         "elm-lang/core": "5.1.1 <= v < 6.0.0",
-        "wende/elchemy-core": "0.0.0 <= v < 1.0.0"
+        "wende/elchemy-core": "0.0.1 < v <= 1.0.0"
+    },
+    "dependency-sources": {
+        "wende/elchemy-core": {
+            "url": "git@github.com:wende/elchemy-core.git",
+            "ref": "0.7.0-2"
+        }
     },
     "elm-version": "0.18.0 <= v < 0.19.0"
 }
